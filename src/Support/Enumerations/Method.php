@@ -2,7 +2,9 @@
 
 namespace WebProxy\Support\Enumerations;
 
-class Method extends \Consistence\Enum\Enum
+use Consistence\Enum\Enum;
+
+class Method extends Enum
 {
 
 	public const GET    = 'GET';

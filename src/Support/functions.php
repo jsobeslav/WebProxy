@@ -16,7 +16,7 @@ if (! function_exists('prepend_slash')) {
 
 if (! function_exists('append_slash')) {
 	/**
-	 * If necessary, appends trailing slash to URI.
+	 * If necessary, append trailing slash to URI.
 	 *
 	 * @param string $string
 	 *
@@ -30,7 +30,7 @@ if (! function_exists('append_slash')) {
 
 if (! function_exists('trim_slashes')) {
 	/**
-	 * If necessary, trim slash from beginning and end of the string.
+	 * If necessary, trim slashes from beginning and end of the string.
 	 *
 	 * @param string $string
 	 *

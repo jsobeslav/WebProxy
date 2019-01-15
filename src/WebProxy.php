@@ -3,7 +3,6 @@
 namespace WebProxy;
 
 use WebProxy\Clients\ClientFactory;
-use WebProxy\Endpoints\EndpointInterface;
 use WebProxy\Endpoints\HttpEndpoint;
 use WebProxy\Endpoints\SoapEndpoint;
 use WebProxy\Support\Enumerations\Method;
@@ -11,10 +10,9 @@ use WebProxy\Support\Exceptions\UnsupportedMethodException;
 use WebProxy\Support\Wrappers\Request;
 
 /**
- * Class Proxy
+ * Class WebProxy
  *
- * Performs all HTTP requests and passes the response to appropriate
- *
+ * Performs all requests on endpoints and returns the modified instances.
  */
 class WebProxy
 {
@@ -24,6 +22,12 @@ class WebProxy
 	 *
 	 * @param HttpEndpoint $endpoint Website or RestResource.
 	 * @param array        $headers  HTTP headers submitted with the request.
+	 *
+	 * <pre>
+	 * [
+	 *    'Header-Name' => 'Header-Value'
+	 * ]
+	 * </pre>.
 	 *
 	 * @return HttpEndpoint The same object that has been passed trough parameter $endpoint, but with response.
 	 *
@@ -43,9 +47,42 @@ class WebProxy
 	 * Shorthand for POST httpRequest
 	 *
 	 * @param HttpEndpoint $endpoint Website or RestResource.
-	 * @param array        $postBody
-	 * @param array        $files
+	 * @param array        $postBody Text fields.
+	 *
+	 * <pre>
+	 * [
+	 *    'foo' => 'bar',
+	 *    'baz' => ['hi', 'there!']
+	 * ]
+	 * </pre>.
+	 *
+	 * @param array        $files    Files supplied with the request.
+	 *
+	 * <pre>
+	 * [
+	 *    'filename' => '/fullPath/to/file'
+	 * ]
+	 * </pre>
+	 *
+	 * OR
+	 *
+	 * <pre>
+	 * [
+	 *    [
+	 *        'name'     => 'filename',
+	 *        'contents' => fopen('/path/to/file', 'r'),
+	 *        'filename' => 'custom_filename.txt'
+	 *    ],
+	 * ]
+	 * </pre>.
+	 *
 	 * @param array        $headers  HTTP headers submitted with the request.
+	 *
+	 * <pre>
+	 * [
+	 *    'Header-Name' => 'Header-Value'
+	 * ]
+	 * </pre>.
 	 *
 	 * @return HttpEndpoint The same object that has been passed trough parameter $endpoint, but with response.
 	 *
@@ -70,6 +107,12 @@ class WebProxy
 	 * @param HttpEndpoint $endpoint Website or RestResource.
 	 * @param array        $headers  HTTP headers submitted with the request.
 	 *
+	 * <pre>
+	 * [
+	 *    'Header-Name' => 'Header-Value'
+	 * ]
+	 * </pre>.
+	 *
 	 * @return HttpEndpoint The same object that has been passed trough parameter $endpoint, but with response.
 	 *
 	 * @throws UnsupportedMethodException From self::httpRequest().
@@ -86,13 +129,13 @@ class WebProxy
 
 	/**
 	 * @param HttpEndpoint $endpoint Website or RestResource.
-	 * @param Request      $request  Request options.
+	 * @param Request      $request  Request options object.
 	 *
 	 * @return HttpEndpoint The same object that has been passed trough parameter $endpoint, but with response.
 	 *
-	 * @throws UnsupportedMethodException
-	 * @throws Support\Exceptions\UnknownClient
-	 * @throws Support\Exceptions\UnknownService
+	 * @throws UnsupportedMethodException When request method is blocked by Endpoint's method whitelist.
+	 * @throws Support\Exceptions\UnknownClient When there is no client suitable for Endpoint's service type.
+	 * @throws Support\Exceptions\UnknownService When is Endpoint's service is misconfigured.
 	 */
 	public function httpRequest(HttpEndpoint $endpoint, Request $request): HttpEndpoint
 	{
@@ -110,12 +153,21 @@ class WebProxy
 	/**
 	 * Shorthand for soapCall
 	 *
-	 * @param SoapEndpoint $endpoint
-	 * @param array        $parameters
+	 * @param SoapEndpoint $endpoint   SoapEndpoint.
+	 * @param array        $parameters Parameters supplied to remote method.
 	 *
-	 * @return SoapEndpoint
+	 * <pre>
+	 * [
+	 *    'foo' => 'bar',
+	 *    'baz' => ['hi', 'there!']
+	 * ]
+	 * </pre>.
+	 *
+	 * @return SoapEndpoint  The same object that has been passed trough parameter $endpoint, but with response.
+	 *
 	 * @throws Support\Exceptions\UnknownClient
 	 * @throws Support\Exceptions\UnknownService
+	 * @throws UnsupportedMethodException
 	 */
 	public function call(SoapEndpoint $endpoint, array $parameters = []): SoapEndpoint
 	{
@@ -126,12 +178,14 @@ class WebProxy
 	}
 
 	/**
-	 * @param SoapEndpoint $endpoint
-	 * @param Request      $request
+	 * @param SoapEndpoint $endpoint Soap Endpoint.
+	 * @param Request      $request  Request options object.
 	 *
-	 * @return SoapEndpoint
-	 * @throws Support\Exceptions\UnknownClient
-	 * @throws Support\Exceptions\UnknownService
+	 * @return SoapEndpoint  The same object that has been passed trough parameter $endpoint, but with response.
+	 *
+	 * @throws UnsupportedMethodException When the method is not set to RPC.
+	 * @throws Support\Exceptions\UnknownClient When there is no client suitable for Endpoint's service type.
+	 * @throws Support\Exceptions\UnknownService When is Endpoint's service is misconfigured.
 	 */
 	public function soapRequest(SoapEndpoint $endpoint, Request $request)
 	{

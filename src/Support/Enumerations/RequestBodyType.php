@@ -2,7 +2,9 @@
 
 namespace WebProxy\Support\Enumerations;
 
-class RequestBodyType extends \Consistence\Enum\Enum
+use Consistence\Enum\Enum;
+
+class RequestBodyType extends Enum
 {
 
 	public const JSON        = 'json';

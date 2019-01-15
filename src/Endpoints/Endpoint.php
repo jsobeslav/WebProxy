@@ -9,16 +9,8 @@ use WebProxy\Support\Wrappers\Response;
 abstract class Endpoint implements EndpointInterface
 {
 
-	/** @var Response Wrapped Response */
+	/** @var Response Wrapped Response. */
 	protected $response;
-
-	/** @var string $queryString */
-	protected $queryString;
-
-	public function __construct(string $queryString = '')
-	{
-		$this->queryString = trim_slashes($queryString);
-	}
 
 	/**
 	 * @return ServiceInterface
@@ -31,26 +23,22 @@ abstract class Endpoint implements EndpointInterface
 	}
 
 	/**
-	 * @return string
+	 * Pass Response object to instance of the endpoint.
 	 *
-	 * @throws \WebProxy\Support\Exceptions\UnknownService
+	 * @param Response $response
+	 *
+	 * @return void;
 	 */
-	public function getServiceUri(): string
-	{
-		return $this->getService()
-					->getUri();
-	}
-
-	public function getQueryString(): string
-	{
-		return $this->queryString;
-	}
-
 	public function setResponse(Response $response): void
 	{
 		$this->response = $response;
 	}
 
+	/**
+	 * Return Response object.
+	 *
+	 * @return Response
+	 */
 	public function getResponse(): Response
 	{
 		return $this->response;

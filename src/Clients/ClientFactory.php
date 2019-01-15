@@ -13,8 +13,6 @@ use WebProxy\Support\Exceptions\UnknownService;
  *
  * Client singleton factory. Keeps instances of clients so that they do not need to be instantiated for each
  * endpoint/request.
- *
- * @package WebProxy\Clients
  */
 class ClientFactory
 {
@@ -32,10 +30,10 @@ class ClientFactory
 	 */
 	public static function getClient(string $clientClass): ClientInterface
 	{
-		if (! class_exists($clientClass)) { // @todo check if class is a client
+		if (! class_exists($clientClass)) {
 			throw new UnknownClient();
 		}
-
+		// @todo check if class is a client
 		if (static::$clients[$clientClass] ?? null === null) {
 			static::$clients[$clientClass] = new $clientClass();
 		}

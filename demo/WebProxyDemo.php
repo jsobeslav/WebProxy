@@ -196,6 +196,7 @@ class WebProxyDemo
 	 *
 	 * @throws \WebProxy\Support\Exceptions\UnknownClient
 	 * @throws \WebProxy\Support\Exceptions\UnknownService
+	 * @throws \WebProxy\Support\Exceptions\UnsupportedMethodException
 	 */
 	protected function soapCall()
 	{

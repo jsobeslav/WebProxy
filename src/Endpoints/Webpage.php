@@ -11,6 +11,13 @@ abstract class Webpage extends HttpEndpoint
 	/** @var Crawler Symfony DomCrawler instance created upon response source */
 	protected $crawler;
 
+	/**
+	 * Save response nad initialize DOM crawler on the returned HTML body.
+	 *
+	 * @param Response $response
+	 *
+	 * @return void
+	 */
 	public function setResponse(Response $response): void
 	{
 		parent::setResponse($response);

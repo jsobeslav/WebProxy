@@ -10,6 +10,13 @@ abstract class RestResource extends HttpEndpoint
 	/** @var array $data */
 	protected $responseData;
 
+	/**
+	 * Save response and array representation of JSON body.
+	 *
+	 * @param Response $response
+	 *
+	 * @return void
+	 */
 	public function setResponse(Response $response): void
 	{
 		parent::setResponse($response);
@@ -17,6 +24,11 @@ abstract class RestResource extends HttpEndpoint
 		$this->responseData = json_decode($this->getResponse()->getBody(), true);
 	}
 
+	/**
+	 * Return parsed JSON data.
+	 *
+	 * @return array Array representation of JSON response.
+	 */
 	public function getResponseData(): array
 	{
 		return $this->responseData;

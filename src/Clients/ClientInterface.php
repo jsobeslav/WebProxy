@@ -9,5 +9,13 @@ use WebProxy\Support\Wrappers\Response;
 interface ClientInterface
 {
 
+	/**
+	 * Perform request and return response.
+	 *
+	 * @param EndpointInterface $endpoint
+	 * @param Request           $request
+	 *
+	 * @return Response
+	 */
 	public function request(EndpointInterface $endpoint, Request $request): Response;
 }

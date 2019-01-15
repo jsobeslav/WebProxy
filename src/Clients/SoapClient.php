@@ -11,6 +11,8 @@ class SoapClient extends Client
 {
 
 	/**
+	 * Pass the request parameters to SoapService's nusoap_client and return response.
+	 *
 	 * @param EndpointInterface $endpoint
 	 * @param Request           $request
 	 *

@@ -4,7 +4,6 @@ namespace WebProxy\Clients;
 
 use GuzzleHttp\Client as GuzzleClient;
 use WebProxy\Endpoints\EndpointInterface;
-use WebProxy\Services\ServiceFactory;
 use WebProxy\Support\Wrappers\Request;
 use WebProxy\Support\Wrappers\Response;
 
@@ -30,9 +29,8 @@ class HttpClient extends Client
 	 */
 	public function request(EndpointInterface $endpoint, Request $request): Response
 	{
-		$fullUri = append_slash($endpoint->getServiceUri())
-				   . trim_slashes($endpoint->getRequestName())
-				   . prepend_slash($endpoint->getQueryString());
+		$fullUri = append_slash($endpoint->getService()->getUri())
+				   . trim_slashes($endpoint->getFullRequestName());
 
 		$responseObject = $this->guzzle->request(
 			$request->getMethod(),

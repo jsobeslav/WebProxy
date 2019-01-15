@@ -9,8 +9,6 @@ use WebProxy\Support\Exceptions\UnknownService;
  *
  * Service singleton factory. Keeps instances of services so that they do not need to be instantiated for each request
  * upon one of their endpoints.
- *
- * @package WebProxy\Services
  */
 class ServiceFactory
 {
@@ -27,10 +25,10 @@ class ServiceFactory
 	 */
 	public static function getService(string $serviceClass): ServiceInterface
 	{
-		if (! class_exists($serviceClass)) { // @todo check if class is a service
+		if (! class_exists($serviceClass)) {
 			throw new UnknownService();
 		}
-
+		// @todo check if class is a service
 		if (static::$services[$serviceClass] ?? null === null) {
 			static::$services[$serviceClass] = new $serviceClass();
 		}
