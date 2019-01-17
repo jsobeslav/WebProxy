@@ -6,7 +6,7 @@
 ## Included libraries / dependencies
 - For HTTP: `guzzlehttp/guzzle` | http://docs.guzzlephp.org/en/stable/
 - For HTML crawling: `symfony/dom-crawler` | https://symfony.com/doc/current/components/dom_crawler.html
-- For SOAP: `econea/nusoap` | https://econea.github.io/nusoap/
+- For SOAP: native `SoapClient` | https://secure.php.net/manual/en/class.soapclient.php
 
 
 
@@ -56,7 +56,7 @@
 # Terminology used
 - `Client`: A class that is responsible for performing request on `Endpoint` located on `Service`, and fetching the response body
     - `HttpClient`: Contains single Guzzle instance to perform all requests
-    - `SoapClient`: Passes requests to every independent `SoapService`'s own instance of `nusoap_client`
+    - `SoapClient`: Passes requests to every independent `SoapService`'s own instance of **native** `SoapClient`
 - `Service`: A collection of endpoints located on single domain.
     - `HttpService`: Service acessible trough HTTP requests
         - `RestApi`: REST API containing multiple `RestResource`s
