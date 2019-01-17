@@ -1,15 +1,19 @@
 {
   "name" : "jsobeslav/webproxy",
   "type" : "library",
-  "description" : "External HTTP calls",
+  "description" : "WebProxy is PHP library that offers consistent interface for communicating with standard third-party web services, be it API or an ordinary website",
   "keywords" : [ ],
+  "version" : "0.1.0",
+  "license" : [
+	"Creative Commons Attribution 4.0 International License"
+  ],
+  "minimum-stability" : "dev",
   "require" : {
 	"php" : ">=7.1",
 	"symfony/dom-crawler" : "^4.1",
 	"guzzlehttp/guzzle" : "^6.3",
 	"symfony/css-selector" : "^4.1",
-    "consistence/consistence": "^1.1",
-    "econea/nusoap": "^0.9.6"
+	"consistence/consistence" : "^1.1"
   },
   "autoload" : {
 	"psr-4" : {
@@ -20,9 +24,9 @@
 	  "src/Support/functions.php"
 	]
   },
-  "require-dev": {
-    "codeception/codeception": "^2.5",
-    "squizlabs/php_codesniffer": "^3.4",
-    "phpmd/phpmd": "^2.6"
+  "require-dev" : {
+	"codeception/codeception" : "^2.5",
+	"squizlabs/php_codesniffer" : "^3.4",
+	"phpmd/phpmd" : "^2.6"
   }
 }
