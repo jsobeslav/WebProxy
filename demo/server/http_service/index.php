@@ -30,6 +30,9 @@
 
 				?>
 			</div>
+			<div class="headers">
+				Value of X-Own-Header header: <?php echo $_SERVER['HTTP_X_OWN_HEADER'] ?? 'undefined'; ?>
+			</div>
 		</main>
 		<footer>
 

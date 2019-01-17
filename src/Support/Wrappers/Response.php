@@ -10,7 +10,7 @@ namespace WebProxy\Support\Wrappers;
 class Response
 {
 
-	/** @var mixed $wrappedObject Object representation of the response from client guzzle response, or wrapped nusoap_client response. */
+	/** @var mixed $wrappedObject Object representation of the response from client guzzle response, or wrapped SoapClient response. */
 	protected $wrappedObject;
 
 	/** @var string $body String representation of body of the response. */

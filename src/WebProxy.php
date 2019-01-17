@@ -163,16 +163,29 @@ class WebProxy
 	 * ]
 	 * </pre>.
 	 *
+	 * @param array        $headers    Headers supplied with the request.
+	 *
+	 * <pre>
+	 * [
+	 *        [
+	 *                     'name' => 'Header-Name',
+	 *                     'value' => 'Header-Value'
+	 *                     'namespace' => 'optional-namespace',
+	 *        ]
+	 * ]
+	 * </pre>.
+	 *
 	 * @return SoapEndpoint  The same object that has been passed trough parameter $endpoint, but with response.
 	 *
 	 * @throws Support\Exceptions\UnknownClient
 	 * @throws Support\Exceptions\UnknownService
 	 * @throws UnsupportedMethodException
 	 */
-	public function call(SoapEndpoint $endpoint, array $parameters = []): SoapEndpoint
+	public function call(SoapEndpoint $endpoint, array $parameters = [], array $headers = []): SoapEndpoint
 	{
 		$request = Request::create(Method::RPC)
-						  ->withBody($parameters);
+						  ->withBody($parameters)
+						  ->withHeaders($headers);
 
 		return $this->soapRequest($endpoint, $request);
 	}

@@ -27,4 +27,11 @@ class PostFormWebpage extends Webpage
 		return $this->crawler->filter('.result')->text();
 	}
 
+	public function getHeadersMessage()
+	{
+		return trim(
+			$this->crawler->filter('.headers')->text()
+		);
+	}
+
 }

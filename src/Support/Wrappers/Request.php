@@ -36,8 +36,7 @@ class Request
 	 * [
 	 *    [
 	 *        'name'     => 'filename',
-	 *        'contents' => fopen('/path/to/file', 'r'),
-	 *        'filename' => 'custom_filename.txt'
+	 *        'contents' => 'whatever
 	 *    ],
 	 * ]
 	 * </pre>
@@ -66,7 +65,11 @@ class Request
 	 *
 	 * <pre>
 	 * [
-	 *    'Header-Name' => 'Header-Value'
+	 *        [
+	 *            'name' => 'Header-Name',
+	 *            'value' => 'Header-Value'
+	 *            'namespace' => 'optional-namespace',
+	 *        ],
 	 * ]
 	 * </pre>.
 	 */
@@ -319,12 +322,34 @@ class Request
 	 * ]
 	 * </pre>.
 	 *
+	 * OR
+	 *
+	 * <pre>
+	 * [
+	 *        [
+	 *                     'name' => 'Header-Name',
+	 *                     'value' => 'Header-Value'
+	 *                     'namespace' => 'optional-namespace',
+	 *        ]
+	 * ]
+	 * </pre>.
 	 *
 	 * @return Request Self.
 	 */
 	public function withHeaders(array $headers): Request
 	{
-		$this->headers = $headers;
+		foreach ($headers as $headerName => $header) {
+			// If necessary, transform the simplified variant of input.
+			if (is_scalar($header)) {
+				$header = [
+					'name'      => $headerName,
+					'value'     => $header,
+					'namespace' => null,
+				];
+			}
+
+			$this->headers[] = $header;
+		}
 
 		return $this;
 	}
@@ -373,24 +398,33 @@ class Request
 	 *
 	 * <pre>
 	 * [
-	 * 'headers' => []
-	 * 'json' => []
-	 * 'form_params' => []
+	 *    'headers' => [
+	 *      'name' => 'value'
+	 *    ],
+	 *    'json' => [],
+	 *    'form_params' => [],
+	 *    'multipart' => [],
 	 * ]
 	 * </pre>.
 	 */
 	public function getGuzzleOptions(): array
 	{
+		// Transform to simpler variant, and append headers.
+		$guzzleHeaders = [];
+		foreach ($this->getHeaders() as $header) {
+			$guzzleHeaders[$header['name']] = $header['value'];
+		}
+
 		$options = [
-			'headers' => $this->getHeaders(),
+			'headers' => $guzzleHeaders,
 		];
 
 		if (in_array($this->getMethod(), [Method::GET, Method::DELETE])) {
 			return $options;
 		}
 
-		// If method supports body, append.
-		$postBodyType = $this->getOption('request_body_type') ?? 'body';
+		// If method supports body, append it.
+		$postBodyType = $this->getOption('request_body_type') ?? RequestBodyType::FORM_PARAMS;
 
 		$options[$postBodyType] = array_merge(
 			$this->getBody(),

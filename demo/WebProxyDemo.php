@@ -12,6 +12,7 @@ use WebProxyDemo\Client\JsonPlaceholder\PutResource;
 use WebProxyDemo\Client\LocalServer\HttpService\PostFormWebpage;
 use WebProxyDemo\Client\LocalServer\SoapService\GetProductSoapEndpoint;
 use WebProxyDemo\Client\LocalServer\SoapService\ListProductsSoapEndpoint;
+use WebProxyDemo\Client\LocalServer\SoapService\TestHeadersSoapEndpoint;
 use WebProxyDemo\Client\Nameday\TodayResource;
 use WebProxyDemo\Client\Nameday\TomorrowResource;
 
@@ -39,7 +40,6 @@ class WebProxyDemo
 	 */
 	public function run()
 	{
-
 		// Fetch JSON from REST API.
 		$this->restGet();
 
@@ -60,6 +60,12 @@ class WebProxyDemo
 
 		// Perform SOAP call.
 		$this->soapCall();
+
+		// HTTP headers
+		$this->httpHeaders();
+
+		// SOAP headers
+		$this->soapHeaders();
 	}
 
 	/**
@@ -219,5 +225,51 @@ class WebProxyDemo
 		);
 
 		echo 'SOAP call: Detail of product with ID 1:' . $getProduct->getTitle() . '</br>';
+	}
+
+	/**
+	 * Submit HTTP headers with the request.
+	 *
+	 * @throws \WebProxy\Support\Exceptions\UnknownClient
+	 * @throws \WebProxy\Support\Exceptions\UnknownService
+	 * @throws \WebProxy\Support\Exceptions\UnsupportedMethodException
+	 */
+	protected function httpHeaders()
+	{
+		/** @var PostFormWebpage $response */
+		$response = $this->proxy->httpRequest(
+			new PostFormWebpage(),
+			Request::create(Method::POST)
+				   ->withHeaders([
+					   'X-Own-Header' => 'Own-Value',
+				   ])
+		);
+
+		echo 'HTTP headers: ' . $response->getHeadersMessage() . '<br/>';
+	}
+
+	/**
+	 * Submit headers with SOAP call.
+	 *
+	 * @throws \WebProxy\Support\Exceptions\UnknownClient
+	 * @throws \WebProxy\Support\Exceptions\UnknownService
+	 * @throws \WebProxy\Support\Exceptions\UnsupportedMethodException
+	 */
+	protected function soapHeaders()
+	{
+		/** @var TestHeadersSoapEndpoint $response */
+		$response = $this->proxy->call(
+			new TestHeadersSoapEndpoint(),
+			[],
+			[
+				[
+					'namespace' => 'http://localhost/soap_service/?wdsl#testHeaders',
+					'name'      => 'OwnParameters',
+					'value'     => ['ApiKey' => '6DE-C41-57C-49C-BCD-C04'],
+				],
+			]
+		);
+
+		echo 'SOAP headers: ' . $response->getHeadersMessage() . '</br>';
 	}
 }

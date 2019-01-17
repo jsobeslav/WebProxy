@@ -2,34 +2,27 @@
 
 namespace WebProxy\Services;
 
-use nusoap_client;
-use WebProxy\Support\Exceptions\NusoapConstructorErrorException;
+use SoapClient;
 
 abstract class SoapService extends Service
 {
 
-	/** @var nusoap_client $nusoap Each service keeps own client. */
-	protected $nusoap;
+	/** @var SoapClient $nativeClient Each service keeps own **native** SoapClient object. */
+	protected $nativeClient;
 
 	/**
 	 * SoapService constructor.
-	 *
-	 * @throws NusoapConstructorErrorException
 	 */
 	public function __construct()
 	{
-		$this->nusoap = new nusoap_client($this->getUri(), true);
-
-		if ($this->nusoap->getError()) {
-			throw new NusoapConstructorErrorException();
-		}
+		$this->nativeClient = new SoapClient($this->getUri(), ['trace' => true, 'exceptions' => true]);
 	}
 
 	/**
-	 * @return nusoap_client
+	 * @return SoapClient
 	 */
-	public function getNusoapClient(): nusoap_client
+	public function getNativeClient(): SoapClient
 	{
-		return $this->nusoap;
+		return $this->nativeClient;
 	}
 }

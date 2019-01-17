@@ -57,8 +57,6 @@ $server->register(
 );
 
 // Implement and register getProduct method.
-
-// Implement and register listProducts method.
 function getProduct(int $id)
 {
 	if ($id == 1) {
@@ -83,6 +81,31 @@ $server->register(
 	'rpc', //STYLE
 	'encoded', // USE
 	'Show details of one product' //DOCS
+);
+
+// Implement and register getHeaders method.
+function getHeaders()
+{
+	 $headers = $GLOBALS['server']->requestHeaders;
+
+	if (!empty($headers)) {
+		return 'The headers are present: '.$headers;
+	} else {
+		return 'The header is NOT present!';
+	}
+}
+
+$server->register(
+	"getHeaders", // FUNCTION NAME
+	[], // INPUT
+	[ //OUTPUT
+	  'return' => 'xsd:string',
+	],
+	$namespace, //NAMESPACE
+	$namespace . '#getHeaders', //SOAP ACTION
+	'rpc', //STYLE
+	'encoded', // USE
+	'Verify that a header was received by the service' //DOCS
 );
 
 // SERVE THE REQUEST.
