@@ -5,7 +5,7 @@
   "keywords" : [ ],
   "version" : "0.1.0",
   "license" : [
-	"Creative Commons Attribution 4.0 International License"
+	"Creative Commons Attribution 4.0 International"
   ],
   "minimum-stability" : "dev",
   "require" : {
