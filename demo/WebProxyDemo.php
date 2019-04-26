@@ -123,6 +123,7 @@ class WebProxyDemo
 	 * @throws \WebProxy\Support\Exceptions\UnknownClient
 	 * @throws \WebProxy\Support\Exceptions\UnknownService
 	 * @throws \WebProxy\Support\Exceptions\UnsupportedMethodException
+	 * @throws \WebProxy\Support\Exceptions\RequestBodyTypeMismatchException
 	 */
 	protected function restPut()
 	{
@@ -138,6 +139,15 @@ class WebProxyDemo
 		);
 
 		echo 'REST PUT: New post title: ' . $post->getNewTitle() . '</br>';
+
+
+		$post = $this->proxy->put(
+			new PutResource('6'),
+			[
+				'title' => 'baz',
+			]
+		);
+		echo 'alternate REST PUT: New post title: ' . $post->getNewTitle() . '</br>';
 	}
 
 	/**
