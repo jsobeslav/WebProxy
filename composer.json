@@ -3,7 +3,6 @@
   "type" : "library",
   "description" : "WebProxy is PHP library that offers consistent interface for communicating with standard third-party web services, be it API or an ordinary website",
   "keywords" : [ ],
-  "version" : "0.1.1",
   "license" : "CC-BY-4.0",
   "minimum-stability" : "dev",
   "require" : {
