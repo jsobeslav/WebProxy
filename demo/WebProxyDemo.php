@@ -28,6 +28,11 @@ class WebProxyDemo
 	public function __construct()
 	{
 		$this->proxy = new WebProxy();
+		$this->proxy->setDetaultRequestOptions([
+			'curl' => [
+				CURLOPT_SSL_VERIFYPEER => false,
+			],
+		]);
 	}
 
 	/**
@@ -139,7 +144,6 @@ class WebProxyDemo
 		);
 
 		echo 'REST PUT: New post title: ' . $post->getNewTitle() . '</br>';
-
 
 		$post = $this->proxy->put(
 			new PutResource('6'),
