@@ -338,6 +338,17 @@ class Request
 	 */
 	public function withHeaders(array $headers): Request
 	{
+		// If there is header "options", merge it with request options.
+		if (! empty($headers['options'])) {
+			$this->withOptions(
+				array_merge(
+					$this->getOptions(),
+					$headers['options']
+				)
+			);
+			unset($headers['options']);
+		}
+
 		foreach ($headers as $headerName => $header) {
 			// If necessary, transform the simplified variant of input.
 			if (is_scalar($header)) {
@@ -350,6 +361,23 @@ class Request
 
 			$this->headers[] = $header;
 		}
+
+		return $this;
+	}
+
+	/**
+	 * @param array $headers
+	 *
+	 * @return Request
+	 */
+	public function appendHeaders(array $headers): Request
+	{
+		$this->withHeaders(
+			array_merge(
+				$this->getHeaders(),
+				$headers
+			)
+		);
 
 		return $this;
 	}
@@ -392,6 +420,23 @@ class Request
 	}
 
 	/**
+	 * @param array $options
+	 *
+	 * @return Request
+	 */
+	public function appendOptions(array $options): Request
+	{
+		$this->withOptions(
+			array_merge(
+				$this->getOptions(),
+				$options
+			)
+		);
+
+		return $this;
+	}
+
+	/**
 	 * Transform the object for use with Guzzle HTTP.
 	 *
 	 * @return array Array suitable for Guzzle request method.
@@ -399,11 +444,12 @@ class Request
 	 * <pre>
 	 * [
 	 *    'headers' => [
-	 *      'name' => 'value'
+	 *      'custom-header-name' => 'value'
 	 *    ],
 	 *    'json' => [],
 	 *    'form_params' => [],
 	 *    'multipart' => [],
+	 *      'custom-option' => []
 	 * ]
 	 * </pre>.
 	 */
@@ -418,6 +464,12 @@ class Request
 		$options = [
 			'headers' => $guzzleHeaders,
 		];
+
+		// If there are custom options, append them.
+		$options = array_merge(
+			$options,
+			($this->getOptions() ?? [])
+		);
 
 		if (in_array($this->getMethod(), [Method::GET, Method::DELETE])) {
 			return $options;

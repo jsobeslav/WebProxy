@@ -17,6 +17,12 @@ use WebProxy\Support\Wrappers\Request;
 class WebProxy
 {
 
+	/** @var array $defaultRequestOptions Default options appended to all requests. */
+	private $defaultRequestOptions = [];
+
+	/** @var array $defaultRequestHeaders Default headers appended to all requests. */
+	private $defaultRequestHeaders = [];
+
 	/**
 	 * Shorthand for GET httpRequest.
 	 *
@@ -201,6 +207,11 @@ class WebProxy
 			throw new UnsupportedMethodException();
 		}
 
+		// Append default options and headers.
+		$request->appendOptions($this->getDefaultRequestOptions());
+		$request->appendHeaders($this->getDefaultRequestHeaders());
+
+		// Perform request.
 		$client   = ClientFactory::getClientForService($endpoint->getService());
 		$response = $client->request($endpoint, $request);
 		$endpoint->setResponse($response);
@@ -264,10 +275,48 @@ class WebProxy
 			throw new UnsupportedMethodException();
 		}
 
+		// Append default options and headers.
+		$request->appendOptions($this->getDefaultRequestOptions());
+		$request->appendHeaders($this->getDefaultRequestHeaders());
+
+		// Perform request.
 		$client   = ClientFactory::getClientForService($endpoint->getService());
 		$response = $client->request($endpoint, $request);
 		$endpoint->setResponse($response);
 
 		return $endpoint;
 	}
+
+	/**
+	 * @return array
+	 */
+	public function getDefaultRequestOptions(): array
+	{
+		return $this->defaultRequestOptions;
+	}
+
+	/**
+	 * @param array $options
+	 */
+	public function setDetaultRequestOptions(array $options): void
+	{
+		$this->defaultRequestOptions = $options;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getDefaultRequestHeaders(): array
+	{
+		return $this->defaultRequestHeaders;
+	}
+
+	/**
+	 * @param array $headers
+	 */
+	public function setDefaultRequestHeaders(array $headers): void
+	{
+		$this->defaultRequestHeaders = $headers;
+	}
+
 }
