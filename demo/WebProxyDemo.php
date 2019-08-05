@@ -28,7 +28,7 @@ class WebProxyDemo
 	public function __construct()
 	{
 		$this->proxy = new WebProxy();
-		$this->proxy->setDetaultRequestOptions([
+		$this->proxy->setDefaultRequestOptions([
 			'curl' => [
 				CURLOPT_SSL_VERIFYPEER => false,
 			],

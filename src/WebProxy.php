@@ -298,7 +298,7 @@ class WebProxy
 	/**
 	 * @param array $options
 	 */
-	public function setDetaultRequestOptions(array $options): void
+	public function setDefaultRequestOptions(array $options): void
 	{
 		$this->defaultRequestOptions = $options;
 	}
