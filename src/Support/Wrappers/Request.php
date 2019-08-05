@@ -458,6 +458,9 @@ class Request
 		// Transform to simpler variant, and append headers.
 		$guzzleHeaders = [];
 		foreach ($this->getHeaders() as $header) {
+			if (! isset($header['name']) || ! isset($header['value'])) {
+				continue;
+			}
 			$guzzleHeaders[$header['name']] = $header['value'];
 		}
 
